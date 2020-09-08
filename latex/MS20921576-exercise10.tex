@@ -1,0 +1,312 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SLIIT Metropolitan Campus
+% Enterprise Software Analysis & Design
+% SE5060: Exercise 10
+% Version 1.0 (2020-09-08)
+%
+% Authors:
+% Pradeep (sanjayangp@gmail.com)
+
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt]{scrartcl} % Font size
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{	
+	\normalfont\normalsize
+	\textsc{Master of Science in Information Technology Specializing in Enterprise Applications Development}\\
+	\textsc{SLIIT Metropolitan Campus}\\
+	\textsc{BOC Merchant Tower, No \#28, St Michae\rq{}s Road,}\\
+	\textsc{Colombo 03, Sri Lanka}\\
+	\vspace{25pt} % Whitespace
+	\rule{\linewidth}{0.5pt}\\ % Thin top horizontal rule
+	\vspace{20pt} % Whitespace
+	{\huge Enterprise Software Analysis \& Design}\\
+	\textsc{SE5060: Exercise 10}\\
+	\vspace{12pt} % Whitespace
+	\rule{\linewidth}{2pt}\\ % Thick bottom horizontal rule
+	\vspace{12pt} % Whitespace
+}
+
+\author{\LARGE N. G. Pradeep Sanjaya\\
+	\small{MS20921576}
+} % Your name
+
+\date{\normalsize\today} % Today's date (\today) or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+\newpage
+\section*{Answer}
+Github - https://github.com/pradeep-sanjaya/ead-esad-exercise10
+
+\subsection*{Classes}
+
+
+\textbf{DecoratorTest.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public class DecoratorTest {
+  public static void main(String[] args) {
+    Meal meal = new Noodles();
+    meal = new Chicken(meal);
+    meal = new Fish(meal);
+    meal = new Egg(meal);
+    meal = new Vegetable(meal);
+
+    System.out.println(meal.getName() + " => Rs. " + meal.getPrice());
+
+    Meal meal2 = new Chicken(new Fish(new Egg(new Vegetable(new Bread()))));
+    System.out.println(meal2.getName() + " => Rs. " + meal2.getPrice());
+
+    Meal meal3 = new Fish(new Chicken(new Vegetable(new Egg(new Rice()))));
+    System.out.println(meal3.getName() + " => Rs. " + meal3.getPrice());
+
+    String description = new Egg(new Chicken(new Fish(new Noodles()))).getName();
+    double price = new Egg(new Chicken(new Fish(new Noodles()))).getPrice();
+
+    System.out.println(description + " => Rs. " + price);
+  }
+}
+\end{lstlisting}
+
+
+\textbf{Meal.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public abstract class Meal {
+
+  private String name;
+  private double price;
+
+  public Meal() {
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public double getPrice() {
+    return price;
+  }
+
+  public void setPrice(float price) {
+    this.price = price;
+  }
+}
+\end{lstlisting}
+
+
+\textbf{Rice.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public class Rice extends Meal {
+  public Rice() {
+    setName("Rice");
+    setPrice(100);
+  }
+
+  @Override
+  public double getPrice() {
+    return super.getPrice();
+  }
+}
+\end{lstlisting}
+
+
+\textbf{Bread.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public class Bread extends Meal {
+  public Bread() {
+    setName("Bread");
+    setPrice(80);
+  }
+
+  @Override
+  public double getPrice() {
+    return super.getPrice();
+  }
+}
+\end{lstlisting}
+
+\textbf{Noodles.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public class Noodles extends Meal {
+
+public Noodles() {
+  setName("Noodles");
+  setPrice(90);
+}
+
+  @Override
+  public double getPrice() {
+    return super.getPrice();
+  }
+}
+\end{lstlisting}
+
+
+\textbf{Chicken.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public class Chicken extends MealDecorator {
+
+  public Chicken(Meal meal) {
+    this.meal = meal;
+  }
+
+  @Override
+  public String getName() {
+    return meal.getName() + ", Chicken";
+  }
+
+  @Override
+  public double getPrice() {
+    return meal.getPrice() + 50;
+  }
+}
+\end{lstlisting}
+
+\textbf{Fish.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public class Fish extends MealDecorator {
+
+  public Fish(Meal meal) {
+    this.meal = meal;
+  }
+
+  @Override
+  public String getName() {
+    return meal.getName() + ", Fish";
+  }
+
+  @Override
+  public double getPrice() {
+    return meal.getPrice() + 40;
+  }
+}
+\end{lstlisting}
+
+\textbf{Egg.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public class Egg extends MealDecorator {
+
+  public Egg(Meal meal) {
+    this.meal = meal;
+  }
+
+  @Override
+  public String getName() {
+    return meal.getName() + ", Egg";
+  }
+
+  @Override
+  public double getPrice() {
+    return meal.getPrice() + 30;
+  }
+}
+\end{lstlisting}
+
+
+\textbf{Vegetable.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public class Vegetable extends MealDecorator {
+
+  public Vegetable(Meal meal) {
+    this.meal = meal;
+  }
+
+  @Override
+  public String getName() {
+    return meal.getName() + ", Vegetable";
+  }
+
+  @Override
+  public double getPrice() {
+    return meal.getPrice() + 20;
+  }
+}
+\end{lstlisting}
+
+
+\textbf{MealDecorator.java}
+\lstset{language=Java}
+\begin{lstlisting}[frame=single]
+package com.sliit;
+
+public abstract class MealDecorator extends Meal {
+  Meal meal;
+
+  public MealDecorator() {
+  }
+
+  public MealDecorator(Meal meal) {
+    this.meal = meal;
+  }
+
+  public abstract String getName();
+  public abstract double getPrice();
+}
+\end{lstlisting}
+
+\subsection*{Screenshots}
+\begin{center}
+	\includegraphics[width=1.0\columnwidth]{./figures/01.png}
+	\captionof{figure}{Solution}\label{Solution}%
+\end{center}
+
+
+\pagebreak
+\newpage
+\begin{thebibliography}{00}
+	\raggedright
+	\bibitem{b1} Samarathunge, U. (2020) Lecture - 03 GOF Design Patterns Part I
+    \bibitem{b1} Samarathunge, U. (2020) Lecture - 03 GOF Design Patterns Part II-v2
+    \bibitem{b1} Samarathunge, U. (2020) Lecture - 03 GOF Design Patterns Part II With Answers
+    \bibitem{b4} Samarathunge, U. (2020) Lecture - 03 GOF Design Patterns Part III
+\end{thebibliography}
+
+
+\end{document}
